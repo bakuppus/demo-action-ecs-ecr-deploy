@@ -127,7 +127,6 @@ jobs:
     needs:
       - build
       - integration
-      - deploy-to-develop
     if: ${{ needs.build.outputs.branch == 'test' }}
 
     env:
