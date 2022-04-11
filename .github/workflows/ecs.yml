@@ -33,14 +33,31 @@ jobs:
         run: echo "::set-output name=branch::$(echo ${GITHUB_REF#refs/heads/})"
         id: extract_branch
 
+  integration:
+    needs: build
+    name: "Integration"
+    runs-on: "ubuntu-latest"
+    if: ${{ needs.build.outputs.branch == 'develop || test' }}
 
+    steps:
+      - name: "Checkout Code"
+        uses: "actions/checkout@v2"
+
+      - name: "Lint code"
+        run: |
+          echo "Linting repository"
+
+      - name: "Run unit tests"
+        run: |
+          echo "Running unit tests"
 
   deploy-to-develop:
     name: Deploy To Develop
     runs-on: ubuntu-latest
     environment: production
     needs:
-      - build
+      - builds
+      - integration
     if: ${{ needs.build.outputs.branch == 'develop' }}
 
     env:
@@ -101,23 +118,7 @@ jobs:
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: true
 
-  integration:
-    needs: build
-    name: "Integration"
-    runs-on: "ubuntu-latest"
-    if: ${{ needs.build.outputs.branch == 'test' }}
 
-    steps:
-      - name: "Checkout Code"
-        uses: "actions/checkout@v2"
-
-      - name: "Lint code"
-        run: |
-          echo "Linting repository"
-
-      - name: "Run unit tests"
-        run: |
-          echo "Running unit tests"
 
   deploy-to-test:
     name: Deploy To Test
@@ -126,7 +127,8 @@ jobs:
     needs:
       - build
       - integration
-    if: ${{ needs.build.outputs.branch == 'develop' }}
+      - deploy-to-develop
+    if: ${{ needs.build.outputs.branch == 'test' }}
 
     env:
       AWS_REGION: "us-east-2"                   # set this to your preferred AWS region, e.g. us-west-1
