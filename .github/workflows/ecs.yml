@@ -41,7 +41,6 @@ jobs:
     environment: production
     needs:
       - build
-      - integration
     if: ${{ needs.build.outputs.branch == 'develop' }}
 
     env:
@@ -121,7 +120,7 @@ jobs:
           echo "Running unit tests"
 
   deploy-to-test:
-    name: Deploy To Develop
+    name: Deploy To Test
     runs-on: ubuntu-latest
     environment: production
     needs:
