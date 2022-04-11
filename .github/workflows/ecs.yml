@@ -27,7 +27,6 @@ env:
                                                # containerDefinitions section of your task definition
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
     outputs:
@@ -38,4 +37,11 @@ jobs:
     shell: bash
     run: echo "::set-output name=branch::$(echo ${GITHUB_REF#refs/heads/})"
     id: extract_branch
+          - run: my-custom-build-script.sh
+          - name: Upload built frontend files
+    uses: actions/upload-artifact@v2
+    with:
+      name: app-build
+      path: dist
+      retention-days: 1
 
