@@ -36,7 +36,7 @@ jobs:
 
 
   deploy-to-develop:
-    name: Deploy
+    name: Deploy To Develop
     runs-on: ubuntu-latest
     environment: production
     needs:
@@ -121,7 +121,7 @@ jobs:
           echo "Running unit tests"
 
     deploy-to-test:
-      name: Deploy
+      name: Deploy To Test
       runs-on: ubuntu-latest
       environment: production
       needs:
