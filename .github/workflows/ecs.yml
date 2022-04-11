@@ -37,7 +37,7 @@ jobs:
     needs: build
     name: "Integration"
     runs-on: "ubuntu-latest"
-    if: ${{ needs.build.outputs.branch == 'develop || test' }}
+    if: ${{ needs.build.outputs.branch == 'develop' || 'test' }}
 
     steps:
       - name: "Checkout Code"
