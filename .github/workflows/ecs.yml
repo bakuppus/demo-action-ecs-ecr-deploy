@@ -6,11 +6,15 @@ on:
   push:
     branches:
       - main
+      - develop
+      - test
+      - release
     tags:
       - "*"
     pull_request:
       branches:
-        - main
+        - develop
+
 
 env:
   AWS_REGION: "us-east-2"                   # set this to your preferred AWS region, e.g. us-west-1
@@ -23,9 +27,22 @@ env:
                                                # containerDefinitions section of your task definition
 
 jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      branch: ${{ steps.extract_branch.outputs.branch }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Extract branch name
+    shell: bash
+    run: echo "::set-output name=branch::$(echo ${GITHUB_REF#refs/heads/})"
+
   integration:
+    needs: build
     name: "Integration"
     runs-on: "ubuntu-latest"
+    if: ${{ needs.build.outputs.branch == 'develop' }}
 
     steps:
       - name: "Checkout Code"
@@ -44,7 +61,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     needs:
+      - build
       - integration
+    if: ${{ needs.build.outputs.branch == 'develop' }}
 
     steps:
     - name: Checkout
