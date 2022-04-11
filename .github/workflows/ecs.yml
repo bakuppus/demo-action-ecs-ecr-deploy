@@ -23,8 +23,7 @@ env:
                                                # containerDefinitions section of your task definition
 
 jobs:
-
- integration:
+  integration:
     name: "Integration"
     runs-on: "ubuntu-latest"
     steps:
