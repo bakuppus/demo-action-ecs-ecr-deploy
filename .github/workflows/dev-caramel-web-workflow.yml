@@ -12,13 +12,13 @@ on:
       branches:
         - develop
 
-    env:
-      AWS_REGION: "us-east-2"
-      ECR_REPOSITORY: "kubelancer-dev-registry"
-      ECS_SERVICE: "kubelancer-dev-service"
-      ECS_CLUSTER: "kubelancer-dev-cluster"
-      ECS_TASK_DEFINITION: ".aws/task-definition.json"
-      CONTAINER_NAME: "nginx"
+env:
+  AWS_REGION: "us-east-2"
+  ECR_REPOSITORY: "kubelancer-dev-registry"
+  ECS_SERVICE: "kubelancer-dev-service"
+  ECS_CLUSTER: "kubelancer-dev-cluster"
+  ECS_TASK_DEFINITION: ".aws/task-definition.json"
+  CONTAINER_NAME: "nginx"
 
 jobs:
 
