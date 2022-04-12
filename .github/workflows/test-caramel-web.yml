@@ -5,12 +5,12 @@ name: Deploy to Amazon ECS
 on:
   push:
     branches:
-      - develop
+      - test
     tags:
       - "*"
     pull_request:
       branches:
-        - develop
+        - test
 
     env:
       AWS_REGION: "us-east-2"
